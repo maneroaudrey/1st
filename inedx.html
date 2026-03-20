@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1st Monthsary Gift</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #001f3f;
+  color: white;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+/* ENVELOPE */
+.envelope {
+  width: 260px;
+  height: 160px;
+  margin: 80px auto;
+  position: relative;
+  cursor: pointer;
+  perspective: 1000px;
+}
+
+.base {
+  width: 100%;
+  height: 100%;
+  background: #ffcccb;
+  border-radius: 8px;
+  position: absolute;
+}
+
+.flap {
+  width: 100%;
+  height: 100%;
+  background: #ff6666;
+  position: absolute;
+  clip-path: polygon(0 0, 100% 0, 50% 60%);
+  transform-origin: top;
+  transition: transform 0.8s ease;
+}
+
+.envelope.open .flap {
+  transform: rotateX(180deg);
+}
+
+/* LETTER */
+.letter {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: 1s ease;
+  max-width: 700px;
+  margin: auto;
+  text-align: left;
+  padding: 15px;
+}
+
+.letter.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+h1, h3 {
+  color: #ffcccb;
+}
+
+/* QUIZ */
+.quiz {
+  margin-top: 20px;
+  background: rgba(255,255,255,0.1);
+  padding: 15px;
+  border-radius: 12px;
+}
+
+.quiz input {
+  width: 100%;
+  margin: 5px 0 10px;
+  padding: 7px;
+  border-radius: 5px;
+  border: none;
+}
+
+/* BUTTONS */
+button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #ffcccb;
+  color: #001f3f;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.love-buttons button {
+  margin: 10px;
+}
+
+/* HEARTS */
+.heart {
+  position: fixed;
+  animation: floatUp 5s linear forwards;
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-100vh); opacity: 0; }
+}
+
+/* CONFETTI */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="envelope" id="envelope">
+  <div class="base"></div>
+  <div class="flap"></div>
+</div>
+
+<div class="letter" id="letter">
+<h1>Happy 1st Monthsary, Baby! 💙</h1>
+
+<p>1st month with you, but it feels like forever. I've known you since 2024, yet you’ve never changed. Thank you for giving me the chance to prove my love for you, and for loving me unconditionally.</p>
+
+<p>I still can't believe that you're back in my life, sev. I'm so happy with everything happening to us—from introducing you to my family and friends, to finally being your girlfriend.</p>
+
+<p>Ang dami na nating pinagdaanan kahit hindi tayo magkasama. I'm so proud of you baby.</p>
+
+<p>Remember that I love you and I REALLY miss everything about you—your smile, your scent, your body ;), your mindset. I love you for being you, baby. Ikaw lang.</p>
+
+<p>I promise I’ll wait until we see each other again and until we finally live together so please stay :). I’ll make bawi when we meet again, but for now, this website muna is my gift for you hehe.</p>
+
+<p>I miss you so much. Sana talaga ikasal na tayo. I'm always here for you kahit 3,000+ miles away ka.</p>
+
+<p>I love you so much, baby ko!</p>
+
+<div class="quiz">
+<h2>Quick Quiz 💙</h2>
+
+<label>Where did we first talk?</label>
+<input id="q1">
+
+<label>Favorite color?</label>
+<input id="q2">
+
+<label>When did we talk again?</label>
+<input id="q3">
+
+<label>When did I say yes?</label>
+<input id="q4">
+
+<label>Who do I love the most?</label>
+<input id="q5">
+
+<button onclick="checkAnswers()">Check Answers</button>
+<div id="result"></div>
+</div>
+
+<h3>Do you love me??????</h3>
+
+<div class="love-buttons">
+<button id="yesBtn">YES 💙</button>
+<button id="noBtn">NO 😭</button>
+</div>
+</div>
+
+<canvas id="confetti"></canvas>
+<audio id="sound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
+
+<script>
+// OPEN ENVELOPE
+document.getElementById("envelope").onclick = function(){
+  this.classList.add("open");
+
+  setTimeout(()=>{
+    document.getElementById("letter").classList.add("show");
+    this.style.display="none";
+  }, 800);
+};
+
+// QUIZ
+const answers = {
+  q1:['instagram','ig'],
+  q2:['pink'],
+  q3:['december 22, 2025','dec 22','dec 22 2025'],
+  q4:['february 23','feb 23','feb 23 2025'],
+  q5:['marjarette','mj','sev']
+};
+
+function checkAnswers(){
+  let score=0;
+
+  for(let i=1;i<=5;i++){
+    let val=document.getElementById("q"+i).value.toLowerCase().trim();
+    if(answers["q"+i].includes(val)) score++;
+  }
+
+  let result=document.getElementById("result");
+
+  if(score===5){
+    result.innerHTML="Perfect!! I LOVE YOU SO MUCH";
+    startConfetti();
+  } else {
+    result.innerHTML=`You got ${score}/5! I still love you pero ano mali mo ha`;
+  }
+}
+
+// HEARTS
+setInterval(()=>{
+  let h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="💙";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=(10+Math.random()*20)+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),5000);
+},300);
+
+// CONFETTI
+let canvas=document.getElementById("confetti");
+let ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let pieces=[];
+
+function startConfetti(){
+  for(let i=0;i<120;i++){
+    pieces.push({
+      x:Math.random()*canvas.width,
+      y:Math.random()*canvas.height,
+      r:Math.random()*6+4,
+      d:Math.random()*20
+    });
+  }
+
+  setInterval(()=>{
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fill();
+      p.y+=2;
+      if(p.y>canvas.height) p.y=0;
+    });
+  },20);
+
+  document.getElementById("sound").play();
+}
+
+// YES
+document.getElementById("yesBtn").onclick=()=>{
+  alert("I knew it!! I love you more 💙");
+  startConfetti();
+};
+
+// NO BUTTON RUNS AWAY
+let noBtn=document.getElementById("noBtn");
+noBtn.onmouseover=()=>{
+  noBtn.style.position="absolute";
+  noBtn.style.left=Math.random()*80+"%";
+  noBtn.style.top=Math.random()*80+"%";
+};
+</script>
+
+</body>
+</html>
